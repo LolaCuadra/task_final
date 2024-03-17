@@ -1,0 +1,341 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This is an API server for a collaborative task management application.",
+      "version": "1.0.0",
+      "title": "Collaborative Task Management API",
+      "contact": {
+        "email": "your_email@example.com"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "task-cse341-final.onrender.com",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "user",
+        "description": "Operations about users"
+      },
+      {
+        "name": "theme",
+        "description": "Operations about themes"
+      },
+      {
+        "name": "task",
+        "description": "Operations about tasks"
+      },
+      {
+        "name": "team",
+        "description": "Operations about teams"
+      }
+    ],
+    "schemes": ["https"],
+    "paths": {
+      "/user": {
+        "post": {
+          "tags": ["user"],
+          "summary": "Create user",
+          "description": "This endpoint is used to create a new user.",
+          "operationId": "createUser",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "User object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User created successfully",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "400": {
+              "description": "Invalid user data provided"
+            }
+          }
+        },
+        "get": {
+          "tags": ["user"],
+          "summary": "Get all users",
+          "description": "This endpoint retrieves a list of all users.",
+          "operationId": "getAllUsers",
+          "produces": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/User"
+                }
+              }
+            },
+            "500": {
+              "description": "Error occurred while fetching users"
+            }
+          }
+        }
+      },
+      "/user/{userId}": {
+        "get": {
+          "tags": ["user"],
+          "summary": "Get user by ID",
+          "description": "This endpoint retrieves a user by their ID.",
+          "operationId": "getUserById",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "User ID",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        },
+        "put": {
+          "tags": ["user"],
+          "summary": "Update user",
+          "description": "This endpoint is used to update user information.",
+          "operationId": "updateUser",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "User ID",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Updated user object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "User updated successfully"
+            },
+            "400": {
+              "description": "Invalid user data provided"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["user"],
+          "summary": "Delete user",
+          "description": "This endpoint is used to delete a user by their ID.",
+          "operationId": "deleteUser",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "description": "User ID",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "User deleted successfully"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      },
+      "/theme": {
+        "post": {
+          "tags": ["theme"],
+          "summary": "Create theme",
+          "description": "This endpoint is used to create a new theme.",
+          "operationId": "createTheme",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Theme object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Theme"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Theme created successfully",
+              "schema": {
+                "$ref": "#/definitions/Theme"
+              }
+            },
+            "400": {
+              "description": "Invalid theme data provided"
+            }
+          }
+        }
+      },
+      "/task": {
+        "post": {
+          "tags": ["task"],
+          "summary": "Create task",
+          "description": "This endpoint is used to create a new task.",
+          "operationId": "createTask",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Task object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Task"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Task created successfully",
+              "schema": {
+                "$ref": "#/definitions/Task"
+              }
+            },
+            "400": {
+              "description": "Invalid task data provided"
+            }
+          }
+        }
+      },
+      "/team": {
+        "post": {
+          "tags": ["team"],
+          "summary": "Create team",
+          "description": "This endpoint is used to create a new team.",
+          "operationId": "createTeam",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Team object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Team"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Team created successfully",
+              "schema": {
+                "$ref": "#/definitions/Team"
+              }
+            },
+            "400": {
+              "description": "Invalid team data provided"
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Theme": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "in_progress", "done"]
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+  
