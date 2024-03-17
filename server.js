@@ -4,6 +4,10 @@ require('dotenv').config();
 const port = process.env.PORT || 8080;
 const app = express();
 const { auth, requiresAuth } = require('express-openid-connect');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swaggerDesign.json'); 
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const config = {
   authRequired: false,
@@ -16,6 +20,7 @@ const config = {
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
+// app.use('/api-docs', swaggerConfig);
 
 // req.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
@@ -53,7 +58,7 @@ db.mongoose
     // Check if authentication was successful
     if (req.query && req.query.code) {
         // Authentication successful, redirect the user to the desired destination
-        res.redirect('https://task-cse341-final.onrender.com/api-docs'); // change this
+        res.redirect('https://task-cse341-final.onrender.com/api-docs'); 
     } else {
         // Authentication failed or no code received
         res.status(500).send('Authentication failed');
