@@ -7,10 +7,8 @@ const { auth, requiresAuth } = require('express-openid-connect');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDesign.json'); 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 const config = {
-  authRequired: false,
+  authRequired: true, // Change to true to require authentication
   auth0Logout: true,
   secret: process.env.SECRET,
   baseURL: process.env.BASEURL,
@@ -18,17 +16,10 @@ const config = {
   issuerBaseURL: process.env.ISSUEBASERURL
 };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
-// app.use('/api-docs', swaggerConfig);
+app.use(auth(config)); // Apply authentication middleware globally
 
-// req.isAuthenticated is provided from the auth router
-app.get('/', (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-});
-app.get('/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
-})
+app.use('/api-docs', requiresAuth(), swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Require authentication for /api-docs
+
 app
   .use(bodyParser.json())
   .use((req, res, next) => {
@@ -43,7 +34,6 @@ db.mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
-
   .then(() => {
     app.listen(port, () => {
       console.log(`DB Connected and server running on ${port}.`);
@@ -54,13 +44,12 @@ db.mongoose
     process.exit();
   });
 
-  app.get('/callback', (req, res) => {
-    // Check if authentication was successful
-    if (req.query && req.query.code) {
-        // Authentication successful, redirect the user to the desired destination
-        res.redirect('https://task-cse341-final.onrender.com/api-docs'); 
-    } else {
-        // Authentication failed or no code received
-        res.status(500).send('Authentication failed');
-    }
+app.get('/login', (req, res) => {
+  if (req.query && req.query.code) {
+    // Authentication successful, redirect the user to the desired destination
+    res.redirect('https://task-cse341-final.onrender.com/api-docs'); 
+  } else {
+    // Authentication failed or no code received
+    res.status(500).send('Authentication failed');
+  }
 });
