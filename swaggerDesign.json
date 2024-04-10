@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "API server for a collaborative task management application",
+    "description": "This is an API server for a collaborative task management application.",
     "version": "1.0.0",
     "title": "Collaborative Task Management API",
     "contact": {
@@ -14,71 +14,50 @@
   },
   "host": "task-cse341-final.onrender.com",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about users"
+    },
+    {
+      "name": "theme",
+      "description": "Operations about themes"
+    },
+    {
+      "name": "task",
+      "description": "Operations about tasks"
+    },
+    {
+      "name": "team",
+      "description": "Operations about teams"
+    }
+  ],
   "schemes": ["https"],
   "paths": {
-    "/theme": {
+    "/user": {
       "post": {
-        "summary": "Create a theme",
-        "description": "Endpoint to create a new theme",
-        "tags": ["Theme"],
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Theme created successfully"
-          },
-          "400": {
-            "description": "Invalid theme data provided"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get all themes",
-        "description": "Endpoint to get all themes",
-        "tags": ["Theme"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "500": {
-            "description": "Error occurred while fetching themes"
-          }
-        }
-      }
-    },
-    "/theme/{themeName}": {
-      "get": {
-        "summary": "Get theme by name",
-        "description": "Endpoint to get a theme by its name",
-        "tags": ["Theme"],
+        "tags": ["user"],
+        "summary": "Create user",
+        "description": "This endpoint is used to create a new user.",
+        "operationId": "createUser",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "themeName",
-            "in": "path",
-            "description": "Theme name",
+            "in": "body",
+            "name": "body",
+            "description": "User object",
             "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "404": {
-            "description": "Theme not found"
-          }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "summary": "Create a user",
-        "description": "Endpoint to create a new user",
-        "tags": ["User"],
-        "parameters": [],
-        "responses": {
           "201": {
-            "description": "User created successfully"
+            "description": "User created successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "400": {
             "description": "Invalid user data provided"
@@ -86,13 +65,20 @@
         }
       },
       "get": {
+        "tags": ["user"],
         "summary": "Get all users",
-        "description": "Endpoint to get all users",
-        "tags": ["User"],
-        "parameters": [],
+        "description": "This endpoint retrieves a list of all users.",
+        "operationId": "getAllUsers",
+        "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
           },
           "500": {
             "description": "Error occurred while fetching users"
@@ -100,23 +86,28 @@
         }
       }
     },
-    "/user/{username}": {
+    "/user/{userId}": {
       "get": {
-        "summary": "Get user by username",
-        "description": "Endpoint to get a user by username",
-        "tags": ["User"],
+        "tags": ["user"],
+        "summary": "Get user by ID",
+        "description": "This endpoint retrieves a user by their ID.",
+        "operationId": "getUserById",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "username",
+            "name": "userId",
             "in": "path",
-            "description": "Username",
+            "description": "User ID",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
           },
           "404": {
             "description": "User not found"
@@ -124,20 +115,22 @@
         }
       },
       "put": {
+        "tags": ["user"],
         "summary": "Update user",
-        "description": "Endpoint to update a user",
-        "tags": ["User"],
+        "description": "This endpoint is used to update user information.",
+        "operationId": "updateUser",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "username",
+            "name": "userId",
             "in": "path",
-            "description": "Username",
+            "description": "User ID",
             "required": true,
             "type": "string"
           },
           {
-            "name": "body",
             "in": "body",
+            "name": "body",
             "description": "Updated user object",
             "required": true,
             "schema": {
@@ -158,14 +151,16 @@
         }
       },
       "delete": {
+        "tags": ["user"],
         "summary": "Delete user",
-        "description": "Endpoint to delete a user",
-        "tags": ["User"],
+        "description": "This endpoint is used to delete a user by their ID.",
+        "operationId": "deleteUser",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "username",
+            "name": "userId",
             "in": "path",
-            "description": "Username",
+            "description": "User ID",
             "required": true,
             "type": "string"
           }
@@ -180,185 +175,49 @@
         }
       }
     },
-    "/team": {
+    "/theme": {
       "post": {
-        "summary": "Create a team",
-        "description": "Endpoint to create a new team",
-        "tags": ["Team"],
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Team created successfully"
-          },
-          "400": {
-            "description": "Invalid team data provided"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get all teams",
-        "description": "Endpoint to get all teams",
-        "tags": ["Team"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "500": {
-            "description": "Error occurred while fetching teams"
-          }
-        }
-      }
-    },
-    "/team/{teamId}": {
-      "get": {
-        "summary": "Get team by ID",
-        "description": "Endpoint to get a team by its ID",
-        "tags": ["Team"],
+        "tags": ["theme"],
+        "summary": "Create theme",
+        "description": "This endpoint is used to create a new theme.",
+        "operationId": "createTheme",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "teamId",
-            "in": "path",
-            "description": "Team ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "404": {
-            "description": "Team not found"
-          }
-        }
-      },
-      "put": {
-        "summary": "Update team",
-        "description": "Endpoint to update a team",
-        "tags": ["Team"],
-        "parameters": [
-          {
-            "name": "teamId",
-            "in": "path",
-            "description": "Team ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
             "in": "body",
-            "description": "Updated team object",
+            "name": "body",
+            "description": "Theme object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Team"
+              "$ref": "#/definitions/Theme"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Team updated successfully"
+          "201": {
+            "description": "Theme created successfully",
+            "schema": {
+              "$ref": "#/definitions/Theme"
+            }
           },
           "400": {
-            "description": "Invalid team data provided"
-          },
-          "404": {
-            "description": "Team not found"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete team",
-        "description": "Endpoint to delete a team",
-        "tags": ["Team"],
-        "parameters": [
-          {
-            "name": "teamId",
-            "in": "path",
-            "description": "Team ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Team deleted successfully"
-          },
-          "404": {
-            "description": "Team not found"
+            "description": "Invalid theme data provided"
           }
         }
       }
     },
     "/task": {
       "post": {
-        "summary": "Create a task",
-        "description": "Endpoint to create a new task",
-        "tags": ["Task"],
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Task created successfully"
-          },
-          "400": {
-            "description": "Invalid task data provided"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get all tasks",
-        "description": "Endpoint to get all tasks",
-        "tags": ["Task"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "500": {
-            "description": "Error occurred while fetching tasks"
-          }
-        }
-      }
-    },
-    "/task/{taskId}": {
-      "get": {
-        "summary": "Get task by ID",
-        "description": "Endpoint to get a task by its ID",
-        "tags": ["Task"],
+        "tags": ["task"],
+        "summary": "Create task",
+        "description": "This endpoint is used to create a new task.",
+        "operationId": "createTask",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "taskId",
-            "in": "path",
-            "description": "Task ID",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "404": {
-            "description": "Task not found"
-          }
-        }
-      },
-      "put": {
-        "summary": "Update task",
-        "description": "Endpoint to update a task",
-        "tags": ["Task"],
-        "parameters": [
-          {
-            "name": "taskId",
-            "in": "path",
-            "description": "Task ID",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
             "in": "body",
-            "description": "Updated task object",
+            "name": "body",
+            "description": "Task object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Task"
@@ -366,36 +225,45 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Task updated successfully"
+          "201": {
+            "description": "Task created successfully",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
           },
           "400": {
             "description": "Invalid task data provided"
-          },
-          "404": {
-            "description": "Task not found"
           }
         }
-      },
-      "delete": {
-        "summary": "Delete task",
-        "description": "Endpoint to delete a task",
-        "tags": ["Task"],
+      }
+    },
+    "/team": {
+      "post": {
+        "tags": ["team"],
+        "summary": "Create team",
+        "description": "This endpoint is used to create a new team.",
+        "operationId": "createTeam",
+        "produces": ["application/json"],
         "parameters": [
           {
-            "name": "taskId",
-            "in": "path",
-            "description": "Task ID",
+            "in": "body",
+            "name": "body",
+            "description": "Team object",
             "required": true,
-            "type": "string"
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Task deleted successfully"
+          "201": {
+            "description": "Team created successfully",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
           },
-          "404": {
-            "description": "Task not found"
+          "400": {
+            "description": "Invalid team data provided"
           }
         }
       }
