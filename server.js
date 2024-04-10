@@ -1,11 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000; // Change the port to 3000 or any other available port
 const app = express();
 const { auth, requiresAuth } = require('express-openid-connect');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDesign.json');
+const mongoose = require('mongoose');
+
+mongoose.set('strictQuery', false); // Address the Mongoose deprecation warning
 
 const config = {
   authRequired: false,
@@ -15,6 +18,10 @@ const config = {
   clientID: process.env.CLIENTID,
   issuerBaseURL: process.env.ISSUEBASERURL
 };
+
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
 
 // Apply authentication middleware globally
 app.use(auth(config));
