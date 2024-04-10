@@ -1,10 +1,13 @@
+// routes/index.js
+
 const express = require('express');
 const router = express.Router();
+const taskController = require('../controllers/task');
 
-router.use('/', require('./swagger'));
-router.use('/user', require('./user'));
-router.use('/theme', require('./theme'));
-router.use('/task', require('./task')); 
-router.use('/team', require('./team'));
+// Task routes
+router.post('/task', taskController.createTask);
+router.get('/task/:taskId', taskController.getTaskById);
+router.put('/task/:taskId', taskController.updateTask);
+router.delete('/task/:taskId', taskController.deleteTask);
 
 module.exports = router;
