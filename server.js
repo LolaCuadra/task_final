@@ -8,7 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDesign.json'); 
 
 const config = {
-  authRequired: true, // Change to true to require authentication
+  authRequired: false,
   auth0Logout: true,
   secret: process.env.SECRET,
   baseURL: process.env.BASEURL,
@@ -16,17 +16,19 @@ const config = {
   issuerBaseURL: process.env.ISSUEBASERURL
 };
 
-app.use(auth(config)); // Apply authentication middleware globally
+// Apply authentication middleware globally
+app.use(auth(config));
 
 app.use('/api-docs', requiresAuth(), swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Require authentication for /api-docs
 
-app
-  .use(bodyParser.json())
-  .use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-  })
-  .use('/', require('./routes'));
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+
+// Routes setup
+app.use('/', require('./routes'));
 
 const db = require('./models');
 db.mongoose
