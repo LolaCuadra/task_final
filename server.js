@@ -4,8 +4,6 @@ require('dotenv').config();
 const port = process.env.PORT || 8080;
 const app = express();
 const { auth, requiresAuth } = require('express-openid-connect');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swaggerDesign.json'); 
 
 const config = {
   authRequired: false,
@@ -16,19 +14,23 @@ const config = {
   issuerBaseURL: process.env.ISSUEBASERURL
 };
 
-// Apply authentication middleware globally
+// auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
 
-app.use('/api-docs', requiresAuth(), swaggerUi.serve, swaggerUi.setup(swaggerDocument)); // Require authentication for /api-docs
-
-app.use(bodyParser.json());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  next();
+// req.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
-
-// Routes setup
-app.use('/', require('./routes'));
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+})
+app
+  .use(bodyParser.json())
+  .use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+  })
+  .use('/', require('./routes'));
 
 const db = require('./models');
 db.mongoose
@@ -36,6 +38,7 @@ db.mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
+
   .then(() => {
     app.listen(port, () => {
       console.log(`DB Connected and server running on ${port}.`);
@@ -46,12 +49,13 @@ db.mongoose
     process.exit();
   });
 
-app.get('/login', (req, res) => {
-  if (req.query && req.query.code) {
-    // Authentication successful, redirect the user to the desired destination
-    res.redirect('https://task-cse341-final.onrender.com/api-docs'); 
-  } else {
-    // Authentication failed or no code received
-    res.status(500).send('Authentication failed');
-  }
+  app.get('/callback', (req, res) => {
+    // Check if authentication was successful
+    if (req.query && req.query.code) {
+        // Authentication successful, redirect the user to the desired destination
+        res.redirect('task-cse341-final.onrender.com/api-docs');
+    } else {
+        // Authentication failed or no code received
+        res.status(500).send('Authentication failed');
+    }
 });

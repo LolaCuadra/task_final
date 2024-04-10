@@ -33,6 +33,39 @@
     }
   ],
   "paths": {
+    "/task": {
+      "post": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Create a new task",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Task object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TaskInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Task created successfully",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/task/{taskId}": {
       "get": {
         "tags": [
@@ -147,6 +180,39 @@
           },
           "500": {
             "description": "Internal server error"
+          }
+        }
+      },
+      "/team": {
+        "post": {
+          "tags": [
+            "Team"
+          ],
+          "summary": "Create a new team",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Team object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/TeamInput"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Team created successfully",
+              "schema": {
+                "$ref": "#/definitions/Team"
+              }
+            },
+            "400": {
+              "description": "Bad request"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
           }
         }
       },
