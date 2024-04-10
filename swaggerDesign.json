@@ -13,7 +13,7 @@
     }
   },
   "host": "task-cse341-final.onrender.com",
-  "basePath": "/",
+  "basePath": "/a",
   "tags": [
     {
       "name": "Task",
