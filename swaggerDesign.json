@@ -21,6 +21,7 @@
         "summary": "Create a theme",
         "description": "Endpoint to create a new theme",
         "tags": ["Theme"],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "Theme created successfully"
@@ -34,6 +35,7 @@
         "summary": "Get all themes",
         "description": "Endpoint to get all themes",
         "tags": ["Theme"],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful operation"
@@ -73,6 +75,7 @@
         "summary": "Create a user",
         "description": "Endpoint to create a new user",
         "tags": ["User"],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "User created successfully"
@@ -86,6 +89,7 @@
         "summary": "Get all users",
         "description": "Endpoint to get all users",
         "tags": ["User"],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful operation"
@@ -181,6 +185,7 @@
         "summary": "Create a team",
         "description": "Endpoint to create a new team",
         "tags": ["Team"],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "Team created successfully"
@@ -194,6 +199,7 @@
         "summary": "Get all teams",
         "description": "Endpoint to get all teams",
         "tags": ["Team"],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful operation"
@@ -289,6 +295,7 @@
         "summary": "Create a task",
         "description": "Endpoint to create a new task",
         "tags": ["Task"],
+        "parameters": [],
         "responses": {
           "201": {
             "description": "Task created successfully"
@@ -302,6 +309,7 @@
         "summary": "Get all tasks",
         "description": "Endpoint to get all tasks",
         "tags": ["Task"],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Successful operation"
