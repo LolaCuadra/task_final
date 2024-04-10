@@ -1,14 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const port = process.env.PORT || 3000; // Change the port to 3000 or any other available port
+const port = process.env.PORT || 8080;
 const app = express();
 const { auth, requiresAuth } = require('express-openid-connect');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swaggerDesign.json');
 const mongoose = require('mongoose');
 
-mongoose.set('strictQuery', false); // Address the Mongoose deprecation warning
+mongoose.set('strictQuery', false); 
 
 const config = {
   authRequired: false,
