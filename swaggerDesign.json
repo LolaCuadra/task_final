@@ -319,7 +319,7 @@
         }
       }
     },
-    "Team": {
+    "team": {
       "type": "object",
       "properties": {
         "id": {
