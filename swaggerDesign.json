@@ -16,60 +16,235 @@
   "basePath": "/",
   "tags": [
     {
-      "name": "user",
-      "description": "Operations about users"
+      "name": "Task",
+      "description": "Endpoints related to tasks"
     },
     {
-      "name": "theme",
-      "description": "Operations about themes"
+      "name": "Team",
+      "description": "Endpoints related to teams"
     },
     {
-      "name": "task",
-      "description": "Operations about tasks"
+      "name": "Theme",
+      "description": "Endpoints related to themes"
     },
     {
-      "name": "team",
-      "description": "Operations about teams"
+      "name": "User",
+      "description": "Endpoints related to users"
     }
   ],
-  "schemes": ["https"],
   "paths": {
-    "/user": {
-      "post": {
-        "tags": ["user"],
-        "summary": "Create user",
-        "description": "This endpoint is used to create a new user.",
-        "operationId": "createUser",
-        "produces": ["application/json"],
+    "/task/{taskId}": {
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Get task details by ID",
         "parameters": [
           {
-            "in": "body",
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Update task details",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
-            "description": "User object",
+            "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/TaskInput"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "User created successfully",
+          "200": {
+            "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Task"
             }
           },
-          "400": {
-            "description": "Invalid user data provided"
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
+      "delete": {
+        "tags": [
+          "Task"
+        ],
+        "summary": "Delete task by ID",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/team/{teamId}": {
       "get": {
-        "tags": ["user"],
+        "tags": [
+          "Team"
+        ],
+        "summary": "Get team details by ID",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          },
+          "404": {
+            "description": "Team not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Update team details",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TeamInput"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Team"
+            }
+          },
+          "404": {
+            "description": "Team not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Team"
+        ],
+        "summary": "Delete team by ID",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/theme/{themeName}": {
+      "get": {
+        "tags": [
+          "Theme"
+        ],
+        "summary": "Get theme by name",
+        "parameters": [
+          {
+            "name": "themeName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Theme"
+            }
+          },
+          "404": {
+            "description": "Theme not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
         "summary": "Get all users",
-        "description": "This endpoint retrieves a list of all users.",
-        "operationId": "getAllUsers",
-        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -81,23 +256,51 @@
             }
           },
           "500": {
-            "description": "Error occurred while fetching users"
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInput"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
     },
-    "/user/{userId}": {
+    "/user/{username}": {
       "get": {
-        "tags": ["user"],
-        "summary": "Get user by ID",
-        "description": "This endpoint retrieves a user by their ID.",
-        "operationId": "getUserById",
-        "produces": ["application/json"],
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user by username",
         "parameters": [
           {
-            "name": "userId",
+            "name": "username",
             "in": "path",
-            "description": "User ID",
             "required": true,
             "type": "string"
           }
@@ -109,223 +312,97 @@
               "$ref": "#/definitions/User"
             }
           },
-          "404": {
-            "description": "User not found"
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
       "put": {
-        "tags": ["user"],
-        "summary": "Update user",
-        "description": "This endpoint is used to update user information.",
-        "operationId": "updateUser",
-        "produces": ["application/json"],
+        "tags": [
+          "User"
+        ],
+        "summary": "Update user details",
         "parameters": [
           {
-            "name": "userId",
+            "name": "username",
             "in": "path",
-            "description": "User ID",
             "required": true,
             "type": "string"
           },
           {
-            "in": "body",
             "name": "body",
-            "description": "Updated user object",
+            "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/UserInput"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "User updated successfully"
+            "description": "No content"
           },
           "400": {
-            "description": "Invalid user data provided"
+            "description": "Bad request"
           },
-          "404": {
-            "description": "User not found"
+          "500": {
+            "description": "Internal server error"
           }
         }
       },
       "delete": {
-        "tags": ["user"],
-        "summary": "Delete user",
-        "description": "This endpoint is used to delete a user by their ID.",
-        "operationId": "deleteUser",
-        "produces": ["application/json"],
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete user by username",
         "parameters": [
           {
-            "name": "userId",
+            "name": "username",
             "in": "path",
-            "description": "User ID",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "204": {
-            "description": "User deleted successfully"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      }
-    },
-    "/theme": {
-      "post": {
-        "tags": ["theme"],
-        "summary": "Create theme",
-        "description": "This endpoint is used to create a new theme.",
-        "operationId": "createTheme",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Theme object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Theme"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Theme created successfully",
-            "schema": {
-              "$ref": "#/definitions/Theme"
-            }
+            "description": "No content"
           },
           "400": {
-            "description": "Invalid theme data provided"
-          }
-        }
-      }
-    },
-    "/task": {
-      "post": {
-        "tags": ["task"],
-        "summary": "Create task",
-        "description": "This endpoint is used to create a new task.",
-        "operationId": "createTask",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Task object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Task"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Task created successfully",
-            "schema": {
-              "$ref": "#/definitions/Task"
-            }
+            "description": "Bad request"
           },
-          "400": {
-            "description": "Invalid task data provided"
-          }
-        }
-      }
-    },
-    "/team": {
-      "post": {
-        "tags": ["team"],
-        "summary": "Create team",
-        "description": "This endpoint is used to create a new team.",
-        "operationId": "createTeam",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Team object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Team"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Team created successfully",
-            "schema": {
-              "$ref": "#/definitions/Team"
-            }
-          },
-          "400": {
-            "description": "Invalid team data provided"
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
     }
   },
   "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "Theme": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      }
-    },
     "Task": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string"
-        },
         "title": {
           "type": "string"
         },
         "description": {
           "type": "string"
         },
-        "status": {
+        "assignedTo": {
+          "type": "string"
+        },
+        "dueDate": {
           "type": "string",
-          "enum": ["todo", "in_progress", "done"]
+          "format": "date-time"
         }
       }
     },
     "Team": {
       "type": "object",
       "properties": {
-        "id": {
+        "name": {
           "type": "string"
         },
-        "name": {
+        "description": {
           "type": "string"
         },
         "members": {
@@ -335,6 +412,260 @@
           }
         }
       }
+    },
+    "Theme": {
+      "type": "object",
+      "properties": {
+        "themeName": {
+          "type": "string"
+        },
+        "fontSize": {
+          "type": "number"
+        },
+        "fontFamily": {
+          "type": "string"
+        },
+        "inspiration": {
+          "type": "string"
+        },
+        "colors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "currentLocation": {
+          "type": "string"
+        },
+        "openToNewOpportunities": {
+          "type": "boolean"
+        },
+        "profileIsPublic": {
+          "type": "boolean"
+        },
+        "theme_name": {
+          "type": "string"
+        },
+        "info": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "currentLocation": {
+              "type": "string"
+            },
+            "openToNewOpportunities": {
+              "type": "boolean"
+            },
+            "profileIsPublic": {
+              "type": "boolean"
+            },
+            "theme_name": {
+              "type": "string"
+            }
+          }
+        },
+        "profile": {
+          "type": "object",
+          "properties": {
+            "experience": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "education": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "projects": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "references": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "TaskInput": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "assignedTo": {
+          "type": "string"
+        },
+        "dueDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "assignedTo",
+        "dueDate"
+      ]
+    },
+    "TeamInput": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "members"
+      ]
+    },
+    "UserInput": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "currentLocation": {
+          "type": "string"
+        },
+        "openToNewOpportunities": {
+          "type": "boolean"
+        },
+        "profileIsPublic": {
+          "type": "boolean"
+        },
+        "theme_name": {
+          "type": "string"
+        },
+        "info": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "currentLocation": {
+              "type": "string"
+            },
+            "openToNewOpportunities": {
+              "type": "boolean"
+            },
+            "profileIsPublic": {
+              "type": "boolean"
+            },
+            "theme_name": {
+              "type": "string"
+            }
+          }
+        },
+        "profile": {
+          "type": "object",
+          "properties": {
+            "experience": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "education": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "projects": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "references": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "username",
+        "password",
+        "displayName"
+      ]
     }
   }
 }
